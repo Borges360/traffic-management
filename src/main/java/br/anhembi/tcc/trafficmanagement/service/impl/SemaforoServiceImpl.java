@@ -5,11 +5,13 @@ import br.anhembi.tcc.trafficmanagement.dto.SemaforoOutputDTO;
 import br.anhembi.tcc.trafficmanagement.exception.SemaforoNaoEncontradoException;
 import br.anhembi.tcc.trafficmanagement.mapper.SemaforoMapper;
 import br.anhembi.tcc.trafficmanagement.model.SemaforoModel;
+import br.anhembi.tcc.trafficmanagement.model.Status;
 import br.anhembi.tcc.trafficmanagement.repository.SemaforoRepository;
 import br.anhembi.tcc.trafficmanagement.service.SemaforoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -51,12 +53,27 @@ public class SemaforoServiceImpl implements SemaforoService {
 
     }
 
-    public Long deletar(String identificador) {
+    public Integer deletar(String identificador) {
 
-        return semaforoRepository.deleteByIdentificador(identificador)
-                .orElseThrow(() ->
-                        new SemaforoNaoEncontradoException(identificador));
+        Integer quantidadeExclusoes  = semaforoRepository.deleteByIdentificador(identificador);
 
+        if(quantidadeExclusoes>0){
+            return quantidadeExclusoes;
+        } else {
+            throw new SemaforoNaoEncontradoException(identificador);
+        }
+
+    }
+
+    public Integer iniciarSemaforo(String identificador) {
+
+        Integer quantidadeSemaforosIniciados = semaforoRepository.updateStatus(Status.ATIVO, identificador);
+
+        if(quantidadeSemaforosIniciados>0){
+            return quantidadeSemaforosIniciados;
+        } else {
+             throw new SemaforoNaoEncontradoException(identificador);
+        }
     }
 
 

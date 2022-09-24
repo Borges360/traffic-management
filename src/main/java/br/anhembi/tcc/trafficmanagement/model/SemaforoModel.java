@@ -35,6 +35,7 @@ public class SemaforoModel {
 
     @Builder.Default
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status = Status.PROCESSANDO;
 
     public SemaforoModel() {

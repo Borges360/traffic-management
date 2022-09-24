@@ -8,6 +8,7 @@ import br.anhembi.tcc.trafficmanagement.service.impl.SemaforoServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,12 +40,19 @@ public class SemaforoController {
     @PostMapping("/semaforo")
     public ResponseEntity<SemaforoOutputDTO> criarSemaforo(@RequestBody SemaforoImputDTO semaforoImputDTO) {
         SemaforoOutputDTO semaforo = semaforoService.criar(semaforoImputDTO);
-        return ResponseEntity.ok(semaforo);
+        return new ResponseEntity<>(semaforo, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/semaforo/{identificador}")
+    ResponseEntity<SemaforoOutputDTO> iniciarSemaforo(@PathVariable String identificador) {
+        semaforoService.iniciarSemaforo(identificador);
+        return ResponseEntity.accepted().build();
     }
 
     @DeleteMapping("/semaforo/{identificador}")
     public ResponseEntity<Long> deletarSemaforo(@PathVariable String identificador) {
-        return ResponseEntity.ok(semaforoService.deletar(identificador));
+        semaforoService.deletar(identificador);
+        return ResponseEntity.accepted().build();
     }
 
 }
