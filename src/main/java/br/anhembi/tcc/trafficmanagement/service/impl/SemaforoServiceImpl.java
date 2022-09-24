@@ -46,9 +46,9 @@ public class SemaforoServiceImpl implements SemaforoService {
 
     }
 
-    public SemaforoOutputDTO criar(SemaforoImputDTO semaforoImputDTO) {
+    public SemaforoOutputDTO criar(SemaforoImputDTO semaforoImputDTO, String url, int porta) {
 
-        final SemaforoModel semaforoModel = semaforoMapper.toModel(semaforoImputDTO);
+        final SemaforoModel semaforoModel = semaforoMapper.toModel(semaforoImputDTO, url, porta);
         return semaforoMapper.toOutputDTO(semaforoRepository.save(semaforoModel));
 
     }

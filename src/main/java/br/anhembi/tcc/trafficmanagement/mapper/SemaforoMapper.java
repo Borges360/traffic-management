@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SemaforoMapper {
 
-    public SemaforoModel toModel(SemaforoImputDTO semaforoImputDTO){
+    public SemaforoModel toModel(SemaforoImputDTO semaforoImputDTO, String url, int porta){
         return SemaforoModel.builder()
                 .identificador(semaforoImputDTO.getIdentificador())
-
+                .url(url)
+                .porta(porta)
                 .build();
     }
 

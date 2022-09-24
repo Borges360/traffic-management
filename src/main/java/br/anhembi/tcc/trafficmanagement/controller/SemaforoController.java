@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class SemaforoController {
 
@@ -38,8 +40,8 @@ public class SemaforoController {
     }
 
     @PostMapping("/semaforo")
-    public ResponseEntity<SemaforoOutputDTO> criarSemaforo(@RequestBody SemaforoImputDTO semaforoImputDTO) {
-        SemaforoOutputDTO semaforo = semaforoService.criar(semaforoImputDTO);
+    public ResponseEntity<SemaforoOutputDTO> criarSemaforo(@RequestBody SemaforoImputDTO semaforoImputDTO, HttpServletRequest request) {
+        SemaforoOutputDTO semaforo = semaforoService.criar(semaforoImputDTO, request.getRemoteAddr(), request.getRemotePort());
         return new ResponseEntity<>(semaforo, HttpStatus.CREATED);
     }
 

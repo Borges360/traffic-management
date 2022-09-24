@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface SemaforoService {
 
-    SemaforoOutputDTO criar(SemaforoImputDTO semaforoImputDTO);
+    SemaforoOutputDTO criar(SemaforoImputDTO semaforoImputDTO, String url, int porta);
 
     Integer deletar(String identificador);
 

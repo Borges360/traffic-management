@@ -38,6 +38,12 @@ public class SemaforoModel {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PROCESSANDO;
 
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "porta")
+    private int porta;
+
     public SemaforoModel() {
 
     }
