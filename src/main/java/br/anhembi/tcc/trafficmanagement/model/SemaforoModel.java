@@ -3,18 +3,22 @@ package br.anhembi.tcc.trafficmanagement.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @Table(name = "semaforo")
-public class SemaforoModel {
+public class SemaforoModel implements Serializable {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "semaforo_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -43,6 +47,11 @@ public class SemaforoModel {
 
     @Column(name = "porta")
     private int porta;
+
+    @Setter
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name="semaforo_id")
+    private List<Secundarios> secundarios;
 
     public SemaforoModel() {
 

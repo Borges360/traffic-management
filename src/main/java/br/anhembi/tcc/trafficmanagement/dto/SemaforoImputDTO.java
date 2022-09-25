@@ -9,4 +9,8 @@ public class SemaforoImputDTO {
 
     private String identificador;
 
+    private String identificadorSemaforoPrincipal;
+
+    private boolean tempoInverso;
+
 }

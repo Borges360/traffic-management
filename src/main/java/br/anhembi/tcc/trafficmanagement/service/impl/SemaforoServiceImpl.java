@@ -7,11 +7,11 @@ import br.anhembi.tcc.trafficmanagement.mapper.SemaforoMapper;
 import br.anhembi.tcc.trafficmanagement.model.SemaforoModel;
 import br.anhembi.tcc.trafficmanagement.model.Status;
 import br.anhembi.tcc.trafficmanagement.repository.SemaforoRepository;
+import br.anhembi.tcc.trafficmanagement.service.SemaforoSecundarioService;
 import br.anhembi.tcc.trafficmanagement.service.SemaforoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -20,10 +20,12 @@ public class SemaforoServiceImpl implements SemaforoService {
 
     private final SemaforoRepository semaforoRepository;
     private final SemaforoMapper semaforoMapper;
+    private final SemaforoSecundarioService semaforoSecundarioService;
 
-    public SemaforoServiceImpl(SemaforoRepository semaforoRepository, SemaforoMapper semaforoMapper) {
+    public SemaforoServiceImpl(SemaforoRepository semaforoRepository, SemaforoMapper semaforoMapper, SemaforoSecundarioService semaforoSecundarioService) {
         this.semaforoRepository = semaforoRepository;
         this.semaforoMapper = semaforoMapper;
+        this.semaforoSecundarioService = semaforoSecundarioService;
     }
 
     public Page<SemaforoOutputDTO> buscarSemaforos(Pageable pageable) {
@@ -48,10 +50,18 @@ public class SemaforoServiceImpl implements SemaforoService {
 
     public SemaforoOutputDTO criar(SemaforoImputDTO semaforoImputDTO, String url, int porta) {
 
-        final SemaforoModel semaforoModel = semaforoMapper.toModel(semaforoImputDTO, url, porta);
-        return semaforoMapper.toOutputDTO(semaforoRepository.save(semaforoModel));
+        SemaforoModel semaforoModel = semaforoRepository.save(
+                semaforoMapper.toModel(semaforoImputDTO, url, porta));
+
+        if(!semaforoImputDTO.getIdentificadorSemaforoPrincipal().isBlank())  {
+            return semaforoSecundarioService.criar(semaforoImputDTO, semaforoModel);
+        }
+
+        return semaforoMapper.toOutputDTO(semaforoModel);
 
     }
+
+
 
     public Integer deletar(String identificador) {
 
